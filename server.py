@@ -129,6 +129,96 @@ class GameInsertHandler(tornado.web.RequestHandler):
 				response = {
 					'error' : True,
 					'msg' : 'double value'
+				}
+		self.write(response)
+
+class EventInsertHandler(tornado.web.RequestHandler):
+	@gen.coroutine
+	def post(self):
+		game = self.get_argument('game', '')
+		time = self.get_argument('time', '')
+		place = self.get_argument('place', '')
+
+		if not game:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите id игры.'
+			}
+		elif not time:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите время.'
+			}
+		elif not place:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите место.'
+			}
+		else:
+			try:
+				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+				cur = conn.cursor()
+				yield cur.execute("INSERT INTO events (game, time, place) VALUES (%s, %s, %s)", 
+					(game, time, place))			
+				yield cur.execute("SELECT id FROM events WHERE game = %s AND time = %s AND place = %s", 
+					(game, time, place))
+				conn.commit()
+				id_ = str(cur.fetchone()[0])
+				cur.close()
+				conn.close()
+				response = {
+					'error': False,
+					'id': id_
+				}
+			except:
+				response = {
+					'error' : True,
+					'msg' : 'double value'
+				}	
+		self.write(response)
+
+class ParticipantInsertHandler(tornado.web.RequestHandler):
+	@gen.coroutine
+	def post(self):
+		game = self.get_argument('game', '')
+		time = self.get_argument('time', '')
+		place = self.get_argument('place', '')
+
+		if not game:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите id игры.'
+			}
+		elif not time:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите время.'
+			}
+		elif not place:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите место.'
+			}
+		else:
+			try:
+				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+				cur = conn.cursor()
+				yield cur.execute("INSERT INTO events (game, time, place) VALUES (%s, %s, %s)", 
+					(game, time, place))			
+				yield cur.execute("SELECT id FROM events WHERE game = %s AND time = %s AND place = %s", 
+					(game, time, place))
+				conn.commit()
+				id_ = str(cur.fetchone()[0])
+				cur.close()
+				conn.close()
+				response = {
+					'error': False,
+					'id': id_
+				}
+			except:
+				response = {
+					'error' : True,
+					'msg' : 'double value'
 				}	
 		self.write(response)
 
@@ -137,7 +227,9 @@ application = tornado.web.Application([
 	(r"/select_events", EventsHandler),
 	(r"/select_players", PlayersHandler),
 	(r"/insert_player", PlayerInsertHandler),
-	(r"/insert_game", GameInsertHandler)],
+	(r"/insert_game", GameInsertHandler),
+	(r"/insert_event", EventInsertHandler),
+	(r"/insert_participant", ParticipantInsertHandler)],
 	debug = True
 )
 
