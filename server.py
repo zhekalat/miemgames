@@ -1,7 +1,7 @@
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
-import pymysql.cursors
+import tornado_mysql
 
 def insert_player(name, group):
 	connection = pymysql.connect(host = 'localhost',
@@ -82,11 +82,23 @@ def select_games():
 
 	return result
 
+@gen.coroutine
+def main():
+    conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+    cur = conn.cursor()
+    yield cur.execute("SELECT name FROM games")
+    print(cur.description)
+    for row in cur:
+       print(row)
+    cur.close()
+    conn.close()
+
 class GameHandler(tornado.web.RequestHandler):
     def get(self):
-        db = database.Connection("localhost", "miemgames", user = "ubuntu")
-        for game in d.query("SELECT * FROM games"):
-                print(game)
+	ioloop.IOLoop.current().run_sync(main)
+        #db = database.Connection("localhost", "miemgames", user = "ubuntu")
+        #for game in d.query("SELECT * FROM games"):
+        #        print(game)
 
         #for game in select_games():
         #	self.write(game)
