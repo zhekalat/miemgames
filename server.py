@@ -45,6 +45,7 @@ class PlayersHandler(tornado.web.RequestHandler):
 		conn.close()
 
 class PlayerInsertHandler(tornado.web.RequestHandler):
+	@gen.coroutine
 	def post(self):
 		name = self.get_argument('name', '')
 		num_group = self.get_argument('num_group', '')
@@ -61,16 +62,17 @@ class PlayerInsertHandler(tornado.web.RequestHandler):
 			}
 		else:
 			response = {
-				'error': True, 
+				'error': False, 
 				'msg': 'Спасибо.'
 			}
 			conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 			cur = conn.cursor()
-			yield cur.execute("INSERT INTO players (name, num_group) VALUES (%s, %s)", name, num_group)
+			yield cur.execute("INSERT INTO players (name, num_group) VALUES (%s, %s)", (name, num_group, ))
+			conn.commit()
 			cur.close()
 			conn.close()
 
-		self.write(response)
+		self.write(str(response))
 
 application = tornado.web.Application([
 	(r"/select_games", GamesHandler), 
