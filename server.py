@@ -67,6 +67,8 @@ class PlayerInsertHandler(tornado.web.RequestHandler):
 			conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 			cur = conn.cursor()
 			yield cur.execute("INSERT INTO players (name, num_group) VALUES (%s, %s)", name, num_group)
+			cur.close()
+			conn.close()
 
 		self.write(response)
 
