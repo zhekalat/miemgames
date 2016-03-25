@@ -203,12 +203,72 @@ class ParticipantInsertHandler(tornado.web.RequestHandler):
 				cur.close()
 				conn.close()
 				response = {
-					'error': False,
+					'error': False
 				}
 			except:
 				response = {
 					'error' : True,
 					'msg' : 'double value'
+				}	
+		self.write(response)
+
+class PlayersFromEventHandler(tornado.web.RequestHandler):
+	@gen.coroutine
+	def post(self):
+		player = self.get_argument('player', '')
+
+		if not player:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите id игрока.'
+			}
+		else:
+			try:
+				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+				cur = conn.cursor()
+				yield cur.execute("select p.* from players p, participants pa where pa.player = p.id and p.id = %s", 
+					(player))
+				for row in enumerate(cur):
+					result[cur[0]] = {'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])}
+				cur.close()
+				conn.close()
+				response = {
+					'error': False
+				}
+			except:
+				response = {
+					'error' : True,
+					'msg' : 'Данный игрок не учавствует ни в каких играх.'
+				}	
+		self.write(response)
+
+class PlayersFromEventHandler(tornado.web.RequestHandler):
+	@gen.coroutine
+	def post(self):
+		event = self.get_argument('event', '')
+
+		if not player:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите id игрока.'
+			}
+		else:
+			try:
+				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+				cur = conn.cursor()
+				yield cur.execute("select e.* from events e, participants pa where pa.player = e.id and e.id = %s", 
+					(player))
+				for row in enumerate(cur):
+					result[cur[0]] = {'game': str(row[1]), 'time': str(row[2]), 'place': str(row[3])}
+				cur.close()
+				conn.close()
+				response = {
+					'error': False
+				}
+			except:
+				response = {
+					'error' : True,
+					'msg' : 'Данный игрок не учавствует ни в каких играх.'
 				}	
 		self.write(response)
 
@@ -219,7 +279,8 @@ application = tornado.web.Application([
 	(r"/insert_player", PlayerInsertHandler),
 	(r"/insert_game", GameInsertHandler),
 	(r"/insert_event", EventInsertHandler),
-	(r"/insert_participant", ParticipantInsertHandler)],
+	(r"/insert_participant", ParticipantInsertHandler),
+	(r'/select_palyers_from_event', PlayersFromEventHandler)],
 	debug = True
 )
 
