@@ -69,6 +69,7 @@ class PlayerInsertHandler(tornado.web.RequestHandler):
 			cur = conn.cursor()
 			yield cur.execute("INSERT INTO players (name, num_group) VALUES (%s, %s)", (name, num_group, ))
 			conn.commit()
+			yield cur.execute("SELECT id FROM players WHERE name = %s AND num_group = %s", (name, num_group, ))
 			cur.close()
 			conn.close()
 
@@ -103,17 +104,20 @@ class GameInsertHandler(tornado.web.RequestHandler):
 				'msg': 'Пожалуйста, введите максимальное количество игроков.'
 			}
 		else:
-			response = {
-				'error': False, 
-				'msg': 'Спасибо.'
-			}
 			conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 			cur = conn.cursor()
 			yield cur.execute("INSERT INTO games (description, name, min_players, max_players) VALUES (%s, %s, %s, %s)", 
 				(description, name, min_players, max_players))
 			conn.commit()
+			yield cur.execute("SELECT id FROM games WHERE description = %s AND name = %s AND min_players = %s  AND max_players = %s", 
+				(description, name, min_players, max_players))
+			id_ = cur.[0]
 			cur.close()
 			conn.close()
+			response = {
+				'error': False, 
+				'id': id_
+			}
 
 		self.write(response)
 
