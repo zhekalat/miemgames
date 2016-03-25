@@ -14,7 +14,7 @@ class GamesHandler(tornado.web.RequestHandler):
 		result = {}
 		for i, row in enumerate(cur):
 			result[i] = {'name': str(row[2]), 'min_players': str(row[3]), 'max_players':  str(row[4]), 'description': str(row[1])}
-		self.write(str(result))
+		self.write(result)
 		cur.close()
 		conn.close()
 
@@ -26,8 +26,8 @@ class EventsHandler(tornado.web.RequestHandler):
 		yield cur.execute("SELECT * FROM events")
 		result = {}
 		for i, row in enumerate(cur):
-			result[i] = {'game': str(row[2]), 'title': str(row[3]), 'place': str(row[4])}
-		self.write(str(result))
+			result[i] = {'game': str(row[1]), 'title': str(row[2]), 'place': str(row[3])}
+		self.write(result)
 		cur.close()
 		conn.close()
 
@@ -39,8 +39,8 @@ class PlayersHandler(tornado.web.RequestHandler):
 		yield cur.execute("SELECT * FROM players")
 		result = {}
 		for i, row in enumerate(cur):
-			result[i] = {'name': str(row[2]), 'num_group': str(row[3]), 'rating': str(row[4])}
-		self.write(str(result))
+			result[i] = {'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])}
+		self.write(result)
 		cur.close()
 		conn.close()
 
@@ -72,16 +72,16 @@ class PlayerInsertHandler(tornado.web.RequestHandler):
 			cur.close()
 			conn.close()
 
-		self.write(str(response))
+		self.write(response)
 
 class GameInsertHandler(tornado.web.RequestHandler):
 	@gen.coroutine
 	def post(self):
-		description = self.get_argument('description', '')
 		name = self.get_argument('name', '')
+		description = self.get_argument('description', '')
 		min_players = self.get_argument('min_players', '')
-		min_players = self.get_argument('max_players', '')
-
+		max_players = self.get_argument('max_players', '')
+		self.write(description)
 		if not name:
 			response = {
 				'error': True, 
@@ -109,19 +109,20 @@ class GameInsertHandler(tornado.web.RequestHandler):
 			}
 			conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 			cur = conn.cursor()
-			yield cur.execute("INSERT INTO players (description, name, min_players, max_players) VALUES (%s, %s, %s, %s)", 
-				(name, num_group, min_players, max_players))
+			yield cur.execute("INSERT INTO games (description, name, min_players, max_players) VALUES (%s, %s, %s, %s)", 
+				(description, name, min_players, max_players))
 			conn.commit()
 			cur.close()
 			conn.close()
 
-		self.write(str(response))
+		self.write(response)
 
 application = tornado.web.Application([
 	(r"/select_games", GamesHandler), 
 	(r"/select_events", EventsHandler),
 	(r"/select_players", PlayersHandler),
-	(r"/insert_player", PlayerInsertHandler)],
+	(r"/insert_player", PlayerInsertHandler),
+	(r"/insert_game", GameInsertHandler)],
 	debug = True
 )
 
