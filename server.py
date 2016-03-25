@@ -12,8 +12,8 @@ class GamesHandler(tornado.web.RequestHandler):
 		cur = conn.cursor()
 		yield cur.execute("SELECT * FROM games")
 		result = {}
-		for i, row in enumerate(cur):
-			result[i] = {'name': str(row[2]), 'min_players': str(row[3]), 'max_players':  str(row[4]), 'description': str(row[1])}
+		for row in cur:
+			result[str(row[0])] = {'name': str(row[2]), 'min_players': str(row[3]), 'max_players':  str(row[4]), 'description': str(row[1])}
 		self.write(result)
 		cur.close()
 		conn.close()
@@ -25,8 +25,8 @@ class EventsHandler(tornado.web.RequestHandler):
 		cur = conn.cursor()
 		yield cur.execute("SELECT * FROM events")
 		result = {}
-		for i, row in enumerate(cur):
-			result[i] = {'game': str(row[1]), 'time': str(row[2]), 'place': str(row[3])}
+		for row in cur:
+			result[str(row[0])] = {'game': str(row[1]), 'time': str(row[2]), 'place': str(row[3])}
 		self.write(result)
 		cur.close()
 		conn.close()
@@ -38,8 +38,8 @@ class PlayersHandler(tornado.web.RequestHandler):
 		cur = conn.cursor()
 		yield cur.execute("SELECT * FROM players")
 		result = {}
-		for i, row in enumerate(cur):
-			result[i] = {'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])}
+		for irow in cur:
+			result[str(row[0])] = {'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])}
 		self.write(result)
 		cur.close()
 		conn.close()
