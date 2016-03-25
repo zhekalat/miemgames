@@ -84,8 +84,12 @@ def select_games():
 
 class GameHandler(tornado.web.RequestHandler):
     def get(self):
-        for game in select_games():
-        	self.write(game)
+        db = database.Connection("localhost", "miemgames", user = "ubuntu")
+        for game in d.query("SELECT * FROM games"):
+                print(game)
+
+        #for game in select_games():
+        #	self.write(game)
 
 application = tornado.web.Application(
 	[(r"/select_games", GameHandler)],
