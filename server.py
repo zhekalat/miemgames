@@ -250,14 +250,14 @@ class EventsFromEventHandler(tornado.web.RequestHandler):
 		if not event:
 			response = {
 				'error': True, 
-				'msg': 'Пожалуйста, введите id игрока.'
+				'msg': 'Пожалуйста, введите id события.'
 			}
 		else:
 			try:
 				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 				cur = conn.cursor()
 				yield cur.execute("select e.* from events e, participants pa where pa.player = e.id and e.id = %s", 
-					(player))
+					(event))
 				for row in enumerate(cur):
 					result[cur[0]] = {'game': str(row[1]), 'time': str(row[2]), 'place': str(row[3])}
 				cur.close()
@@ -268,7 +268,7 @@ class EventsFromEventHandler(tornado.web.RequestHandler):
 			except:
 				response = {
 					'error' : True,
-					'msg' : 'Данный игрок не учавствует ни в каких играх.'
+					'msg' : 'Данного события не существует.'
 				}	
 		self.write(response)
 
