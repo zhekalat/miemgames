@@ -5,8 +5,8 @@ import pymysql.cursors
 
 def insert_player(name, group):
 	connection = pymysql.connect(host = 'localhost',
-								 user = 'miemgames',
-								 password = 'miemgames',
+								 user = 'ubuntu',
+								 password = '',
 								 db = 'miemgames',
 								 charset = 'utf8',
 								 cursorclass = pymysql.cursors.DictCursor)
@@ -20,8 +20,8 @@ def insert_player(name, group):
 
 def insert_event(game, time, place):
 	connection = pymysql.connect(host = 'localhost',
-								 user = 'miemgames',
-								 password = 'miemgames',
+								 user = 'ubuntu',
+								 password = '',
 								 db = 'miemgames',
 								 charset = 'utf8',
 								 cursorclass = pymysql.cursors.DictCursor)
@@ -35,9 +35,9 @@ def insert_event(game, time, place):
 
 def insert_game(name, description, min_players, max_players):
 	connection = pymysql.connect(host = 'localhost',
-								 user = 'miemgames',
-								 password = 'miemgames',
-								 db = 'miemgames',
+								 user = 'ubuntu',
+								 password = '',
+								 db = '',
 								 charset = 'utf8',
 								 cursorclass = pymysql.cursors.DictCursor)
 	try:
@@ -50,8 +50,8 @@ def insert_game(name, description, min_players, max_players):
 
 def insert_participant(event, player):
 	connection = pymysql.connect(host = 'localhost',
-								 user = 'miemgames',
-								 password = 'miemgames',
+								 user = 'ubuntu',
+								 password = '',
 								 db = 'miemgames',
 								 charset = 'utf8',
 								 cursorclass = pymysql.cursors.DictCursor)
@@ -67,8 +67,8 @@ def select_games():
 	result = {} 
 
 	connection = pymysql.connect(host = 'localhost',
-								 user = 'miemgames',
-								 password = 'miemgames',
+								 user = 'ubuntu',
+								 password = '',
 								 db = 'miemgames',
 								 charset = 'utf8',
 								 cursorclass = pymysql.cursors.DictCursor)
