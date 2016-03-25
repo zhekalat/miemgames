@@ -94,14 +94,14 @@ def main():
     conn.close()
 
 class GameHandler(tornado.web.RequestHandler):
-    def get(self):
+	def get(self):
 	ioloop.IOLoop.current().run_sync(main)
-        #db = database.Connection("localhost", "miemgames", user = "ubuntu")
-        #for game in d.query("SELECT * FROM games"):
-        #        print(game)
+		#db = database.Connection("localhost", "miemgames", user = "ubuntu")
+		#for game in d.query("SELECT * FROM games"):
+		#        print(game)
 
-        #for game in select_games():
-        #	self.write(game)
+		#for game in select_games():
+		#	self.write(game)
 
 application = tornado.web.Application(
 	[(r"/select_games", GameHandler)],
