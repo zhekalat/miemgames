@@ -276,7 +276,7 @@ application = tornado.web.Application([
 	(r"/insert_game", GameInsertHandler),
 	(r"/insert_event", EventInsertHandler),
 	(r"/insert_participant", ParticipantInsertHandler),
-	(r'/select_palyers_from_participants', PlayersFromParticipantsHandler),
+	(r'/select_players_from_participants', PlayersFromParticipantsHandler),
 	(r'/select_events_from_participants', EventsFromParticipantsHandler)],
 	debug = True
 )
