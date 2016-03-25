@@ -84,7 +84,8 @@ def select_games():
 
 class GameHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write(select_games)
+        for game in select_games():
+        	self.write(game)
 
 application = tornado.web.Application(
 	[(r"/select_games", GameHandler)],
