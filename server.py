@@ -86,9 +86,10 @@ class GameHandler(tornado.web.RequestHandler):
     def get(self):
         self.write(select_games)
 
-application = tornado.web.Application([
-    (r"/select_games", GameHandler),
-])
+application = tornado.web.Application(
+	[(r"/select_games", GameHandler)],
+	debug = True
+)
 
 if __name__ == "__main__":
     http_server = tornado.httpserver.HTTPServer(application)
