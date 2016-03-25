@@ -44,10 +44,10 @@ class PlayersHandler(tornado.web.RequestHandler):
 		cur.close()
 		conn.close()
 
-application = tornado.web.Application(
-	[(r"/select_games", GamesHandler)],
-	[(r"/select_events", EventsHandler)],
-	[(r"/select_players", PlayersHandler)],
+application = tornado.web.Application([
+	(r"/select_games", GamesHandler), 
+	(r"/select_events", EventsHandler),
+	(r"/select_players", PlayersHandler)],
 	debug = True
 )
 
