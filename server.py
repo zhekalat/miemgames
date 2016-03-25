@@ -87,7 +87,7 @@ class GameHandler(tornado.web.RequestHandler):
         self.write(select_games)
 
 application = tornado.web.Application([
-    (r"/games", MainHandler),
+    (r"/select_games", GameHandler),
 ])
 
 if __name__ == "__main__":
