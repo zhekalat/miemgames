@@ -226,11 +226,11 @@ class PlayersFromParticipantsHandler(tornado.web.RequestHandler):
 			try:
 				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 				cur = conn.cursor()
-				yield cur.execute("SELECT g.name, e.time, e.place FROM players p, participants pa, events e, games g WHERE pa.player = p.id AND g.id = e.game AND e.id = pa.event AND p.id = %s", 
+				yield cur.execute("SELECT e.id, g.name, e.time, e.place FROM players p, participants pa, events e, games g WHERE pa.player = p.id AND g.id = e.game AND e.id = pa.event AND p.id = %s", 
 					(player))
 				response = {}
 				for i, row in enumerate(cur):
-					response[i + 1] = {'name': str(row[0]), 'time': str(row[1]), 'place': str(row[2])}
+					response[i + 1] = {'id': str(row[0]), 'name': str(row[1]), 'time': str(row[2]), 'place': str(row[3])}
 				cur.close()
 				conn.close()
 			except:
@@ -254,11 +254,11 @@ class EventsFromParticipantsHandler(tornado.web.RequestHandler):
 			try:
 				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 				cur = conn.cursor()
-				yield cur.execute("SELECT p.name, p.num_group, p.rating FROM players p, participants pa, events e, games g WHERE pa.player = p.id AND g.id = e.game AND e.id = pa.event AND e.id = %s", 
+				yield cur.execute("SELECT p* FROM players p, participants pa, events e, games g WHERE pa.player = p.id AND g.id = e.game AND e.id = pa.event AND e.id = %s", 
 					(event))
 				response = {}
 				for i, row in enumerate(cur):
-					response[i + 1] = {'name': str(row[0]), 'num_group': str(row[1]), 'rating': str(row[2])}
+					response[i + 1] = {'id': str(row[0]), 'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])}
 				cur.close()
 				conn.close()
 			except:
