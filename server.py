@@ -197,7 +197,7 @@ class ParticipantInsertHandler(tornado.web.RequestHandler):
 			try:
 				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 				cur = conn.cursor()
-				yield cur.execute("INSERT INTO PARTICIPANTS (event, player) VALUES (%s, %s)", 
+				yield cur.execute("INSERT INTO participants (event, player) VALUES (%s, %s)", 
 					(event, player))
 				conn.commit()
 				cur.close()
