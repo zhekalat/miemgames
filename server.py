@@ -61,18 +61,24 @@ class PlayerInsertHandler(tornado.web.RequestHandler):
 				'msg': 'Пожалуйста, введите номер группы.'
 			}
 		else:
-			conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
-			cur = conn.cursor()
-			yield cur.execute("INSERT INTO players (name, num_group) VALUES (%s, %s)", (name, num_group, ))
-			yield cur.execute("SELECT id FROM players WHERE name = %s AND num_group = %s", (name, num_group[: 6], ))
-			conn.commit()
-			id_ = str(cur.fetchone()[0])
-			cur.close()
-			conn.close()
-			response = {
-				'error' : False,
-				'id' : id_
-			}
+			try:
+				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+				cur = conn.cursor()
+				yield cur.execute("INSERT INTO players (name, num_group) VALUES (%s, %s)", (name, num_group, ))
+				yield cur.execute("SELECT id FROM players WHERE name = %s AND num_group = %s", (name, num_group[: 6], ))
+				conn.commit()
+				id_ = str(cur.fetchone()[0])
+				cur.close()
+				conn.close()
+				response = {
+					'error' : False,
+					'id' : id_
+				}
+			except:
+				response = {
+					'error': True,
+					'msg': 'double value'
+				}
 		self.write(response)
 
 class GameInsertHandler(tornado.web.RequestHandler):
@@ -104,21 +110,26 @@ class GameInsertHandler(tornado.web.RequestHandler):
 				'msg': 'Пожалуйста, введите максимальное количество игроков.'
 			}
 		else:
-			conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
-			cur = conn.cursor()
-			yield cur.execute("INSERT INTO games (description, name, min_players, max_players) VALUES (%s, %s, %s, %s)", 
-				(description, name, min_players, max_players))			
-			yield cur.execute("SELECT id FROM games WHERE description = %s AND name = %s AND min_players = %s  AND max_players = %s", 
-				(description, name, min_players, max_players))
-			conn.commit()
-			id_ = str(cur.fetchone()[0])
-			cur.close()
-			conn.close()
-			response = {
-				'error': False,
-				'id': id_
-			}
-			
+			try:
+				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+				cur = conn.cursor()
+				yield cur.execute("INSERT INTO games (description, name, min_players, max_players) VALUES (%s, %s, %s, %s)", 
+					(description, name, min_players, max_players))			
+				yield cur.execute("SELECT id FROM games WHERE description = %s AND name = %s AND min_players = %s  AND max_players = %s", 
+					(description, name, min_players, max_players))
+				conn.commit()
+				id_ = str(cur.fetchone()[0])
+				cur.close()
+				conn.close()
+				response = {
+					'error': False,
+					'id': id_
+				}
+			except:
+				response = {
+					'error' : True,
+					'msg' : 'double value'
+				}	
 		self.write(response)
 
 application = tornado.web.Application([
