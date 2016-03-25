@@ -27,7 +27,7 @@ CREATE TABLE `events` (
   `game` int(11) NOT NULL DEFAULT '0',
   `time` datetime NOT NULL,
   `place` tinytext NOT NULL,
-  PRIMARY KEY (`id`,`game`,`time`),
+  PRIMARY KEY (`id`,`game`,`time`, `place`),
   KEY `game` (`game`),
   CONSTRAINT `events_ibfk_1` FOREIGN KEY (`game`) REFERENCES `games` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -55,7 +55,7 @@ CREATE TABLE `games` (
   `name` tinytext NOT NULL,
   `min_players` int(11) NOT NULL,
   `max_players` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`, `description`, `name`, `min_players`, `max_players`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -120,7 +120,7 @@ CREATE TABLE `players` (
   `name` tinytext NOT NULL,
   `num_group` char(6) DEFAULT NULL,
   `rating` int(11) DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`, `num_group`, `name`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
