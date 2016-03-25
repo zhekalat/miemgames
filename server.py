@@ -74,6 +74,49 @@ class PlayerInsertHandler(tornado.web.RequestHandler):
 
 		self.write(str(response))
 
+class GameInsertHandler(tornado.web.RequestHandler):
+	@gen.coroutine
+	def post(self):
+		description = self.get_argument('description', '')
+		name = self.get_argument('name', '')
+		min_players = self.get_argument('min_players', '')
+		min_players = self.get_argument('max_players', '')
+
+		if not name:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите имя.'
+			}
+		elif not description:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите описание.'
+			}
+		elif not min_players:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите минимальное количество игроков.'
+			}
+		elif not max_players:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите максимальное количество игроков.'
+			}
+		else:
+			response = {
+				'error': False, 
+				'msg': 'Спасибо.'
+			}
+			conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+			cur = conn.cursor()
+			yield cur.execute("INSERT INTO players (description, name, min_players, max_players) VALUES (%s, %s, %s, %s)", 
+				(name, num_group, min_players, max_players))
+			conn.commit()
+			cur.close()
+			conn.close()
+
+		self.write(str(response))
+
 application = tornado.web.Application([
 	(r"/select_games", GamesHandler), 
 	(r"/select_events", EventsHandler),
