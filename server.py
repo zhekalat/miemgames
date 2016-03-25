@@ -228,13 +228,11 @@ class PlayersFromParticipantsHandler(tornado.web.RequestHandler):
 				cur = conn.cursor()
 				yield cur.execute("select p.* from players p, participants pa where pa.player = p.id and p.id = %s", 
 					(player))
+				response = {}
 				for row in enumerate(cur):
-					result[cur[0]] = {'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])}
+					response[cur[0]] = {'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])}
 				cur.close()
 				conn.close()
-				response = {
-					'error': False
-				}
 			except:
 				response = {
 					'error' : True,
@@ -242,7 +240,7 @@ class PlayersFromParticipantsHandler(tornado.web.RequestHandler):
 				}	
 		self.write(response)
 
-class EventsFromEventHandler(tornado.web.RequestHandler):
+class EventsFromParticipantsHandler(tornado.web.RequestHandler):
 	@gen.coroutine
 	def post(self):
 		event = self.get_argument('event', '')
@@ -258,13 +256,11 @@ class EventsFromEventHandler(tornado.web.RequestHandler):
 				cur = conn.cursor()
 				yield cur.execute("select e.* from events e, participants pa where pa.event = e.id and e.id = %s", 
 					(event))
+				response = {}
 				for row in enumerate(cur):
-					result[cur[0]] = {'game': str(row[1]), 'time': str(row[2]), 'place': str(row[3])}
+					response[cur[0]] = {'game': str(row[1]), 'time': str(row[2]), 'place': str(row[3])}
 				cur.close()
 				conn.close()
-				response = {
-					'error': False
-				}
 			except:
 				response = {
 					'error' : True,
@@ -281,7 +277,7 @@ application = tornado.web.Application([
 	(r"/insert_event", EventInsertHandler),
 	(r"/insert_participant", ParticipantInsertHandler),
 	(r'/select_palyers_from_participants', PlayersFromParticipantsHandler),
-	(r'/select_events_from_participants', EventsFromEventHandler)],
+	(r'/select_events_from_participants', EventsFromParticipantsHandler)],
 	debug = True
 )
 
