@@ -38,7 +38,7 @@ class PlayersHandler(tornado.web.RequestHandler):
 		cur = conn.cursor()
 		yield cur.execute("SELECT * FROM players")
 		result = {}
-		for irow in cur:
+		for row in cur:
 			result[str(row[0])] = {'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])}
 		self.write(result)
 		cur.close()
