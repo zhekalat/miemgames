@@ -247,7 +247,7 @@ class EventsFromEventHandler(tornado.web.RequestHandler):
 	def post(self):
 		event = self.get_argument('event', '')
 
-		if not player:
+		if not event:
 			response = {
 				'error': True, 
 				'msg': 'Пожалуйста, введите id игрока.'
