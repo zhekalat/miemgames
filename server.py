@@ -212,7 +212,7 @@ class ParticipantInsertHandler(tornado.web.RequestHandler):
 				}	
 		self.write(response)
 
-class PlayersFromEventHandler(tornado.web.RequestHandler):
+class PlayersFromParticipantsHandler(tornado.web.RequestHandler):
 	@gen.coroutine
 	def post(self):
 		player = self.get_argument('player', '')
@@ -242,7 +242,7 @@ class PlayersFromEventHandler(tornado.web.RequestHandler):
 				}	
 		self.write(response)
 
-class PlayersFromEventHandler(tornado.web.RequestHandler):
+class EventsFromEventHandler(tornado.web.RequestHandler):
 	@gen.coroutine
 	def post(self):
 		event = self.get_argument('event', '')
@@ -280,7 +280,8 @@ application = tornado.web.Application([
 	(r"/insert_game", GameInsertHandler),
 	(r"/insert_event", EventInsertHandler),
 	(r"/insert_participant", ParticipantInsertHandler),
-	(r'/select_palyers_from_event', PlayersFromEventHandler)],
+	(r'/select_palyers_from_participants', PlayersFromParticipantsHandler),
+	(r'/select_events_from_participants', EventsFromEventHandler)],
 	debug = True
 )
 
