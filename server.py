@@ -256,7 +256,7 @@ class EventsFromEventHandler(tornado.web.RequestHandler):
 			try:
 				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 				cur = conn.cursor()
-				yield cur.execute("select e.* from events e, participants pa where pa.player = e.id and e.id = %s", 
+				yield cur.execute("select e.* from events e, participants pa where pa.event = e.id and e.id = %s", 
 					(event))
 				for row in enumerate(cur):
 					result[cur[0]] = {'game': str(row[1]), 'time': str(row[2]), 'place': str(row[3])}
