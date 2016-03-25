@@ -45,35 +45,36 @@ class PlayersHandler(tornado.web.RequestHandler):
 		conn.close()
 
 class PlayerInsertHandler(tornado.web.RequestHandler):
-    def post(self):
-        name = self.get_argument('name', '')
-        num_group = self.get_argument('num_group', '')
+	def post(self):
+		name = self.get_argument('name', '')
+		num_group = self.get_argument('num_group', '')
 
-        if not name:
-            response = {
-                'error': True, 
-                'msg': 'Пожалуйста, введите имя.'
-            }
-        elif not num_group:
-            response = {
-                'error': True, 
-                'msg': 'Пожалуйста, введите номер группы.'
-            }
-        else:
-            response = {
-                'error': True, 
-                'msg': 'Спасибо.'
-            }
-            conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+		if not name:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите имя.'
+			}
+		elif not num_group:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите номер группы.'
+			}
+		else:
+			response = {
+				'error': True, 
+				'msg': 'Спасибо.'
+			}
+			conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 			cur = conn.cursor()
 			yield cur.execute("INSERT INTO players (name, num_group) VALUES (%s, %s)", name, num_group)
 
-        self.write(response)
+		self.write(response)
 
 application = tornado.web.Application([
 	(r"/select_games", GamesHandler), 
 	(r"/select_events", EventsHandler),
-	(r"/select_players", PlayersHandler)],
+	(r"/select_players", PlayersHandler),
+	(r"/insert_player", PlayerInsertHandler)],
 	debug = True
 )
 
