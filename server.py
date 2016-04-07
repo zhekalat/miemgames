@@ -14,7 +14,7 @@ class GamesHandler(tornado.web.RequestHandler):
 		result = {}
 		for row in cur:
 			result[str(row[0])] = {'name': str(row[2]), 'min_players': str(row[3]), 'max_players':  str(row[4]), 'description': str(row[1])}
-		self.write(result)
+		self.write({"games": [result]})
 		cur.close()
 		conn.close()
 
