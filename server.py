@@ -27,7 +27,7 @@ class EventsHandler(tornado.web.RequestHandler):
 		result = []
 		for row in cur:
 			result.append({'game': str(row[1]), 'time': str(row[2]), 'place': str(row[3])})
-		self.write("events": result)
+		self.write({"events": result})
 		cur.close()
 		conn.close()
 
@@ -40,7 +40,7 @@ class PlayersHandler(tornado.web.RequestHandler):
 		result = []
 		for row in cur:
 			result.append({'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])})
-		self.write("players":result)
+		self.write({"players":result})
 		cur.close()
 		conn.close()
 
