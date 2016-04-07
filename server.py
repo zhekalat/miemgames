@@ -260,7 +260,7 @@ class EventsFromParticipantsHandler(tornado.web.RequestHandler):
 				response = []
 				for i, row in enumerate(cur):
 					response.appned({'id': str(row[0]), 'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])})
-				response = ["events": response]
+				response = {"events": response}
 				cur.close()
 				conn.close()
 			except:
