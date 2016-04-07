@@ -24,10 +24,10 @@ class EventsHandler(tornado.web.RequestHandler):
 		conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 		cur = conn.cursor()
 		yield cur.execute("SELECT * FROM events")
-		result = {}
+		result = []
 		for row in cur:
-			result[str(row[0])] = {'game': str(row[1]), 'time': str(row[2]), 'place': str(row[3])}
-		self.write(result)
+			result.append({'game': str(row[1]), 'time': str(row[2]), 'place': str(row[3])})
+		self.write("events": result)
 		cur.close()
 		conn.close()
 
@@ -37,10 +37,10 @@ class PlayersHandler(tornado.web.RequestHandler):
 		conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 		cur = conn.cursor()
 		yield cur.execute("SELECT * FROM players")
-		result = {}
+		result = []
 		for row in cur:
-			result[str(row[0])] = {'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])}
-		self.write(result)
+			result.append({'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])})
+		self.write("players":result)
 		cur.close()
 		conn.close()
 
@@ -228,9 +228,10 @@ class PlayersFromParticipantsHandler(tornado.web.RequestHandler):
 				cur = conn.cursor()
 				yield cur.execute("SELECT e.id, g.name, e.time, e.place FROM players p, participants pa, events e, games g WHERE pa.player = p.id AND g.id = e.game AND e.id = pa.event AND p.id = %s", 
 					(player))
-				response = {}
+				response = []
 				for i, row in enumerate(cur):
-					response[i + 1] = {'id': str(row[0]), 'name': str(row[1]), 'time': str(row[2]), 'place': str(row[3])}
+					response.append({'id': str(row[0]), 'name': str(row[1]), 'time': str(row[2]), 'place': str(row[3])})
+				response = {"payers": response}
 				cur.close()
 				conn.close()
 			except:
@@ -256,9 +257,10 @@ class EventsFromParticipantsHandler(tornado.web.RequestHandler):
 				cur = conn.cursor()
 				yield cur.execute("SELECT p.* FROM players p, participants pa, events e, games g WHERE pa.player = p.id AND g.id = e.game AND e.id = pa.event AND e.id = %s", 
 					(event))
-				response = {}
+				response = []
 				for i, row in enumerate(cur):
-					response[i + 1] = {'id': str(row[0]), 'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])}
+					response.appned({'id': str(row[0]), 'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])})
+				response = ["events": response]
 				cur.close()
 				conn.close()
 			except:
