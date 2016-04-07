@@ -11,10 +11,10 @@ class GamesHandler(tornado.web.RequestHandler):
 		conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 		cur = conn.cursor()
 		yield cur.execute("SELECT * FROM games")
-		result = {}
+		result = []
 		for row in cur:
-			result[str(row[0])] = {'name': str(row[2]), 'min_players': str(row[3]), 'max_players':  str(row[4]), 'description': str(row[1])}
-		self.write({"games": [result]})
+			result.append({'name': str(row[2]), 'min_players': str(row[3]), 'max_players':  str(row[4]), 'description': str(row[1])})
+		self.write({"games": result})
 		cur.close()
 		conn.close()
 
