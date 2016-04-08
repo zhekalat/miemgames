@@ -4,6 +4,7 @@
 -- ------------------------------------------------------
 -- Server version	5.6.28-0ubuntu0.15.10.1
 
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -55,9 +56,9 @@ CREATE TABLE `games` (
   `name` tinytext NOT NULL,
   `min_players` int(11) NOT NULL,
   `max_players` int(11) NOT NULL,
-  `picture` text NOT NULL,
+  `picture` text,
   PRIMARY KEY (`id`),
-  UNIQUE (`description`(10), `name`(10), `min_players`, `max_players`, `picture`)
+  UNIQUE (`description`(10), `name`(10), `min_players`, `max_players`, `picture`(10))
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -67,7 +68,7 @@ CREATE TABLE `games` (
 
 LOCK TABLES `games` WRITE;
 /*!40000 ALTER TABLE `games` DISABLE KEYS */;
-insert into games (name, description, min_players, max_players) values
+insert into games (name, description, min_players, max_players, picture) values
 ('Мафия','Психологическая игра для 4-20 участников. Задача игроков — тщательно анализировать слова и поведение других игроков и добиться выполнения своей игровой задачи. Цель мирных жителей — искоренение преступной группировки, цель мафии — захват власти в городе.', 4, 20, 'http://scottystarnes.files.wordpress.com/2013/01/mafia-game-salieri-mobsters-1920x1440.jpg'),
 ('Манчкин','Вот она — колода для реальных бойцов, суровых чистильщиков подземелий. Пафосные речи? Отыгрыш персонажа? Внутренняя логика мира? Кому ты паришь мозги! Мы-то с тобой знаем, зачем нормальные люди приходят в РПГ — мы приходим прокачивать уровень, мочить монстров и доказывать, что мы здесь круче. Мы — манчкины, и это наша колода.', 3, 10, 'http://hobbygames.ru/image/data/HobbyWorld/Munchkin/igra_manchkin.jpg'),
 ('Имаджинариум','Настольная игра, в которой надо самому придумывать ассоциации к картинкам и пытаться разгадать чужие ассоциации. Суть игры в том, чтобы как точнее предположить ход мысли других игроков.', 4, 7, 'http://s5.cdnproductmain.mosigra.ru/511/664/imadjinarium_1500x1500.jpg'),
