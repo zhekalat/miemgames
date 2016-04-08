@@ -283,6 +283,35 @@ class GamesPicHandler(tornado.web.RequestHandler):
 		cur.close()
 		conn.close()
 
+class EventsFromParticipantsHandler(tornado.web.RequestHandler):
+	@gen.coroutine
+	def post(self):
+		event = self.get_argument('event', '')
+
+		if not event:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите id события.'
+			}
+		else:
+			try:
+				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+				cur = conn.cursor()
+				yield cur.execute("SELECT g.name, g.description, g.picture, e.place, e.time FROM events e, players p WHERE e.game = g.id AND e.id = %s", 
+					(event))
+				response = []
+				for i, row in enumerate(cur):
+					response.append({'name': str(row[0]), 'description': str(row[1]), 'picture': str(row[2]), 'place': str(row[3]), 'time': str(row[4])})
+				response = {"events": response}
+				cur.close()
+				conn.close()
+			except:
+				response = {
+					'error' : True,
+					'msg' : 'Данного события не существует.'
+				}	
+		self.write(response)
+
 application = tornado.web.Application([
 	(r"/select_games", GamesHandler), 
 	(r"/select_events", EventsHandler),
@@ -293,7 +322,8 @@ application = tornado.web.Application([
 	(r"/insert_participant", ParticipantInsertHandler),
 	(r'/select_players_from_participants', PlayersFromParticipantsHandler),
 	(r'/select_events_from_participants', EventsFromParticipantsHandler),
-	(r'/select_games_with_picture', GamesPicHandler)],
+	(r'/select_games_with_picture', GamesPicHandler),
+	(r'/select_event_with_picture', EventPicHandler)],
 	debug = True
 )
 
