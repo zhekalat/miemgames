@@ -297,7 +297,7 @@ class EventPicHandler(tornado.web.RequestHandler):
 			try:
 				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 				cur = conn.cursor()
-				yield cur.execute("SELECT g.name, g.description, g.picture, e.place, e.time FROM events e, players p WHERE e.game = g.id AND e.id = %s", 
+				yield cur.execute("SELECT g.name, g.description, g.picture, e.place, e.time FROM events e, games g WHERE e.game = g.id AND e.id = %s", 
 					(event))
 				response = []
 				for i, row in enumerate(cur):
