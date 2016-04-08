@@ -283,7 +283,7 @@ class GamesPicHandler(tornado.web.RequestHandler):
 		cur.close()
 		conn.close()
 
-class EventsFromParticipantsHandler(tornado.web.RequestHandler):
+class EventPicHandler(tornado.web.RequestHandler):
 	@gen.coroutine
 	def post(self):
 		event = self.get_argument('event', '')
