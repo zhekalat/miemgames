@@ -299,7 +299,7 @@ application = tornado.web.Application([
 	(r"/insert_event", EventInsertHandler),
 	(r"/insert_participant", ParticipantInsertHandler),
 	(r'/select_players_from_participants', PlayersFromParticipantsHandler),
-	(r'/select_events_from_participants', EventsFromParticipantsHandler)],
+	(r'/select_events_from_participants', EventsFromParticipantsHandler),
 	(r'/select_games_with_picture', GamesPicHandler)],
 	debug = True
 )
