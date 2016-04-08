@@ -273,21 +273,21 @@ class EventsFromParticipantsHandler(tornado.web.RequestHandler):
 class GamesPicHandler(tornado.web.RequestHandler):
 	@gen.coroutine
 	def get(self):
-		try:
-			conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
-			cur = conn.cursor()
-			yield cur.execute("SELECT g.name, g.description, g.picture FROM games g", 
-				(game))
-			response = []
-			for i, row in enumerate(cur):
-				response.append({'name': str(row[0]), 'description': str(row[1]), 'picture': str(row[2])})
-			response = {"events": response}
-			cur.close()
-			conn.close()
-		except:
-			response = {
-				'error' : True
-			}	
+		#try:
+		conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+		cur = conn.cursor()
+		yield cur.execute("SELECT g.name, g.description, g.picture FROM games g", 
+			(game))
+		response = []
+		for i, row in enumerate(cur):
+			response.append({'name': str(row[0]), 'description': str(row[1]), 'picture': str(row[2])})
+		response = {"events": response}
+		cur.close()
+		conn.close()
+	#except:
+		#	response = {
+		#		'error' : True
+		#	}	
 		self.write(response)
 
 application = tornado.web.Application([
