@@ -1,0 +1,12 @@
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/obj/Release/.NETPortable,Version=v4.5,Profile=Profile78.AssemblyAttribute.cs
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/obj/Release/TabbedPageDemo.MPage.xaml
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/obj/Release/TabbedPageDemo.UpcomingAppointmentsPage.xaml
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/obj/Release/MPage.xaml.g.cs
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/obj/Release/UpcomingAppointmentsPage.xaml.g.cs
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/bin/Release/TabbedPageDemo.dll.mdb
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/bin/Release/TabbedPageDemo.dll
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/obj/Release/TabbedPageDemo.dll
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/obj/Release/TabbedPageDemo.dll.mdb
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/bin/Release/Xamarin.Forms.Core.dll
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/bin/Release/Xamarin.Forms.Xaml.dll
+/Users/vascon/Documents/XamarinProjects/HSE_APP/TabbedPageDemo/TabbedPageDemo/bin/Release/Xamarin.Forms.Platform.dll
