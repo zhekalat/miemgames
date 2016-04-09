@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ 
+xmlns:local="clr-namespace:HSE_APP;assembly=HSE_APP"
+
+x:Class="HSE_APP.MPage">
+
+
+
+<TabbedPage.Children>
+
+
+<ContentPage Title="Лента" Icon="today.png" >
+<StackLayout Padding="5, 25">
+	<Image Source="http://lms.hse.ru/themes/default/templates/1stpage/images/logo-hse-raven.png"
+	                 WidthRequest="100" 
+	                 HeightRequest="100" />
+
+	<ListView ItemTapped="ItemTapped" x:Name="ListView1">
+
+	 <ListView.ItemTemplate>
+    <DataTemplate>
+        <ImageCell 
+            Text="{Binding Name}" 
+            Detail="{Binding Position, StringFormat='{0}'}"
+            ImageSource="{Binding Image}">
+        </ImageCell>
+    </DataTemplate>
+    </ListView.ItemTemplate>
+
+	</ListView>
+
+</StackLayout>
+</ContentPage>
+
+
+<ContentPage Title="Обо мне" Icon="monkeyicon.png" >
+<StackLayout Padding="5, 25">
+		<Image Source="http://lms.hse.ru/themes/default/templates/1stpage/images/logo-hse-raven.png"
+					WidthRequest="100" 
+					HeightRequest="100" />
+		<Label Text="E-Mail:" HorizontalOptions="Center" />
+		<Entry/> 
+		<Label Text="Пароль:" HorizontalOptions="Center" />
+		<Entry/> 
+		<Button Text="Войти"/>      
+</StackLayout>
+</ContentPage>
+
+
+<ContentPage Title="Добавить" Icon="schedule.png" >
+<StackLayout Padding="5, 25">
+	<Image Source="http://lms.hse.ru/themes/default/templates/1stpage/images/logo-hse-raven.png"
+	                 WidthRequest="100" 
+	                 HeightRequest="100" />
+	<Label Text="Название:" HorizontalOptions="Center" />
+	<Entry/> 
+	<Label Text="Описание:" HorizontalOptions="Center" />
+	<Editor/>  
+	<Button Text="Загрузить изображение"/>
+	<Button Text="Создать"/>
+</StackLayout>
+</ContentPage>
+
+
+<ContentPage Title="О разработчиках" Icon="settings.png" >
+<StackLayout Padding="5, 25">
+	<Image Source="http://lms.hse.ru/themes/default/templates/1stpage/images/logo-hse-raven.png"
+	                 WidthRequest="100" 
+	                 HeightRequest="100" />
+	<Label Text="Над проектом работали" HorizontalOptions="Center" />
+	<Label Text="студенты ДКИ НИУ ВШЭ" HorizontalOptions="Center" />
+	<Label Text="(группа БИВ-135):" HorizontalOptions="Center" />
+	<Label Text="Васильев Константин" HorizontalOptions="Center" />
+	<Label Text="Галайко Никита" HorizontalOptions="Center" />
+	<Label Text="Латышев Евгений" HorizontalOptions="Center" />
+	<Label Text="Левченко Софья" HorizontalOptions="Center" />
+	<Label Text="Королькова Елизавета" HorizontalOptions="Center" />
+	<Label Text="Уланова Арина" HorizontalOptions="Center" />
+</StackLayout>
+</ContentPage>
+
+</TabbedPage.Children>
+
+</TabbedPage>

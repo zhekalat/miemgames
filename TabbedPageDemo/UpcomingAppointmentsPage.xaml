@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+			 x:Class="HSE_APP.UpcomingAppointmentsPage"
+			 Title="Upcoming">
+	<ContentPage.Content>
+		<StackLayout>
+			<Button Text="Назад" Clicked="OnBackButtonClicked" HorizontalOptions ="Start" VerticalOptions="Start" />
+			<Label x:Name="DescLabel" Text="Информация о мероприятии" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+			<StackLayout HorizontalOptions="Center" VerticalOptions="End" Orientation="Horizontal">
+				<Button x:Name="b1" Text="Зарегистрироваться" Clicked="OnRegisterButtonClicked" VerticalOptions="CenterAndExpand" />
+            </StackLayout>		
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

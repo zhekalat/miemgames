@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ 
+xmlns:local="clr-namespace:TabbedPageDemo;assembly=TabbedPageDemo"
+
+x:Class="TabbedPageDemo.MonkeyTabbedPage">
+
+
+
+<TabbedPage.Children>
+
+<ContentPage Title="Лента" Icon="monkeyicon.png" >
+
+<ListView x:Name="ListView1" />
+
+</ContentPage>
+
+<ContentPage Title="Обо мне" Icon="monkeyicon.png">
+        <StackLayout Padding="5, 25">
+
+          
+          <Label Text="Chimpanzee"
+                 Font="Bold,Large"
+                 HorizontalOptions="Center" />
+
+          <Image Source="http://lms.hse.ru/themes/default/templates/1stpage/images/logo-hse-raven.png"
+                 WidthRequest="100" 
+                 HeightRequest="100" />
+
+          <StackLayout Padding="50, 10">
+
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Family:"
+                     HorizontalOptions="FillAndExpand" />
+              <Label Text="Hominidae"
+                     Font="Bold,Medium" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Subfamily:"
+                     HorizontalOptions="FillAndExpand" />
+              <Label Text="Homininae"
+                     Font="Bold,Medium" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Tribe:"
+                      HorizontalOptions="FillAndExpand" />
+              <Label Text="Panini"
+                     Font="Bold,Medium" />
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+              <Label Text="Genus:"
+                     HorizontalOptions="FillAndExpand" />
+              <Label Text="Pan"
+                     Font="Bold,Medium" />
+            </StackLayout>
+          </StackLayout>
+        </StackLayout>
+      </ContentPage>
+
+<ContentPage Title="Добавить" Icon="monkeyicon.png">
+
+<ListView x:Name="ListView2" />
+
+</ContentPage>
+
+<ContentPage Title="О разработчиках" Icon="monkeyicon.png">
+
+
+</ContentPage>
+
+</TabbedPage.Children>
+
+</TabbedPage>
