@@ -1,103 +1,55 @@
 ﻿using System;
 
 using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
+using Xamarin.Forms.Platform.iOS;
 
-using HSE_APP.Droid;
+using HSE_APP.iOS;
 
-using AViewGroup = Android.Views.ViewGroup;
-using AndroidView = Android.Views.View;
-using Android.Views;
-using System.Reflection;
+using UIKit;
 
 [assembly:ExportRenderer(typeof(TabbedPage),typeof(TabbedPageCustomRenderer))]
 
-namespace HSE_APP.Droid
+namespace HSE_APP.iOS
 {
 	public class TabbedPageCustomRenderer : TabbedRenderer
 	{
-		int currentIndex = 0;
+		UITabBarController tabbedController;
+		UISwipeGestureRecognizer rightGesture, leftGesture;
+		bool isInitialized = false;
 
-		//Create a listener and detector for the gestures
-		private readonly GesutreListener _listener;
-		private readonly GestureDetector _detector;
-
-		//Create two x points to find out if the swipe was to the left or to the right
-		private float x1,x2;
-
-		TabbedPage tabbedPage;
-
-		public TabbedPageCustomRenderer()
-		{
-			_listener = new GesutreListener();
-			_detector = new GestureDetector (_listener);
-		}
-
-		public override bool OnInterceptTouchEvent (MotionEvent ev)
-		{
-			TouchEventArgs eventArgs = new TouchEventArgs (true, ev);
-			HandleGenericMotion (this, eventArgs);
-
-			return base.OnInterceptTouchEvent(ev);
-		}
-
-		protected override void OnElementChanged (ElementChangedEventArgs<TabbedPage> e)
+		protected override void OnElementChanged (VisualElementChangedEventArgs e)
 		{
 			base.OnElementChanged (e);
 
 			if (e.NewElement != null) {
-				tabbedPage = (TabbedPage)e.NewElement;
+				tabbedController = (UITabBarController)ViewController;
 			}
-		}
 
-		protected override void SwitchContent (Page view)
-		{
-			base.SwitchContent (view);
-			//Need to remove and add Touch event to make sure it is effective on the top current page
-//			ViewGroup.GetChildAt (0).Touch -= HandleGenericMotion;
-			//Need to reset the current index in case user touches tab
-			currentIndex = Element.Children.IndexOf (view);
-//			ViewGroup.GetChildAt (0).Touch += HandleGenericMotion;
-		}
+			if (!isInitialized) {
 
-		public void HandleGenericMotion (object sender, TouchEventArgs e)
-		{
-			//This assignes the detectors touch event
-//			_detector.OnTouchEvent (e.Event);
+				rightGesture = new UISwipeGestureRecognizer (swipe => {
+					//Check to make sure we aren't at the last view
+					Console.WriteLine ("Swipe Left");
+					if(this.SelectedIndex != ViewControllers.Length - 1)
+						tabbedController.SelectedViewController = ViewControllers [this.SelectedIndex + 1];
+				}) {
+					Direction = UISwipeGestureRecognizerDirection.Left
+				};
 
-			//We want to test the down and up actions from the TouchEventArgs
-			switch (e.Event.Action) {
+				leftGesture = new UISwipeGestureRecognizer (swipe => {
+					//Check to make sure we aren't at the first view
+					Console.WriteLine ("Swipe Right");
+					if(this.SelectedIndex != 0)
+						tabbedController.SelectedViewController = ViewControllers [this.SelectedIndex - 1];
+				}) {
+					Direction = UISwipeGestureRecognizerDirection.Right
+				};
 
-			//If action is Down, then we set the x1 value and break
-			case MotionEventActions.Down:
-				x1 = e.Event.GetX ();
-				break;
-				//If action is Up, then we set the x2 and caluclate whether it was a swipe left or right AND swipe was greater then MinimumSwipeDistance
-			case MotionEventActions.Up:
-				x2 = e.Event.GetX ();
-				float delta = x2 - x1;
-				if (Math.Abs (delta) > 100) {
-					if (delta > 0) {
-						Console.WriteLine ("Swipe to the Right");
-						//Check to make sure we aren't at the first view
-						if (currentIndex != 0) {
-							//Replace the current page with the new page
-							currentIndex--;
-							tabbedPage.CurrentPage = tabbedPage.Children [currentIndex];
-						}
+				View.AddGestureRecognizer (rightGesture);
+				View.AddGestureRecognizer (leftGesture);
 
-					} else if (delta < 0) {
-						Console.WriteLine ("Swipe to the Left");
-						//Check to make sure we aren't on the current view
-						if (currentIndex != Element.Children.Count - 1) {
-							//Replace the current page with the new page
-							currentIndex++;
-							tabbedPage.CurrentPage = tabbedPage.Children [currentIndex];
-						}
-					}
-				}
-				break;
+				isInitialized = true;
 			}
 		}
 	}
-} 
+}
