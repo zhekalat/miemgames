@@ -22,10 +22,10 @@ class EventsHandler(tornado.web.RequestHandler):
 	def get(self):
 		conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 		cur = conn.cursor()
-		yield cur.execute("SELECT * FROM events")
+		yield cur.execute("SELECT e.id, e.game, e.time, g.picture FROM events e, games g WHERE games.id = events.game")
 		result = []
 		for row in cur:
-			result.append({'game': str(row[1]), 'time': str(row[2]), 'place': str(row[3])})
+			result.append({'id': str(row[0]), 'game': str(row[1]), 'time': str(row[2]), 'picture': str(row[3])})
 		self.write({"events": result})
 		cur.close()
 		conn.close()
@@ -323,6 +323,36 @@ class EventPicHandler(tornado.web.RequestHandler):
 				}	
 		self.write(response)
 
+class EventParticipantsHandler(tornado.web.RequestHandler):
+	@gen.coroutine
+	def post(self):
+		event = self.get_argument('event', '')
+
+		if not event:
+			response = {
+				'error': True, 
+				'msg': 'Пожалуйста, введите id события.'
+			}
+		else:
+			try:
+				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
+				cur = conn.cursor()
+				yield cur.execute("SELECT pl.name, pl.num_group FROM participants pr, players pl WHERE pr.player = pl.id AND pr.event = %s", 
+					(event))
+				response = []
+				for i, row in enumerate(cur):
+					response.append({'name': str(row[0]), 'num_group': str(row[1])})
+				response = {"events": response}
+				cur.close()
+				conn.close()
+			except:
+				response = {
+					'error' : True,
+					'msg' : 'Данного события не существует.'
+				}	
+		self.write(response)
+
+
 application = tornado.web.Application([
 	(r"/select_games", GamesHandler), 
 	(r"/select_events", EventsHandler),
@@ -334,7 +364,8 @@ application = tornado.web.Application([
 	(r'/select_players_from_participants', PlayersFromParticipantsHandler),
 	(r'/select_events_from_participants', EventsFromParticipantsHandler),
 	(r'/select_games_with_picture', GamesPicHandler),
-	(r'/select_event_with_picture', EventPicHandler)],
+	(r'/select_event_with_picture', EventPicHandler),
+	(r'/select_participants_of_event', EventParticipantsHandler],
 	debug = True
 )
 

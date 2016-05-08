@@ -28,7 +28,7 @@ DROP TABLE IF EXISTS `events`;
 CREATE TABLE `events` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `game` int(11) NOT NULL DEFAULT '0',
-  `time` datetime NOT NULL,
+  `time` tinytext NOT NULL,
   `place` tinytext NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`game`, `time`, `place`(10)),
