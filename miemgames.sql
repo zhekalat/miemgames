@@ -4,6 +4,8 @@
 -- ------------------------------------------------------
 -- Server version	5.6.28-0ubuntu0.15.10.1
 
+CREATE DATABASE IF NOT EXISTS miemgames;
+use miemgames;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -123,6 +125,9 @@ CREATE TABLE `players` (
   `name` tinytext NOT NULL,
   `num_group` char(6) DEFAULT NULL,
   `rating` int(11) DEFAULT '0',
+  `login` varchar(20) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  UNIQUE KEY (`login`),
   PRIMARY KEY (`id`),
   UNIQUE KEY (`name`(10), `num_group`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;

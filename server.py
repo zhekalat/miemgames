@@ -3,7 +3,6 @@ import tornado.ioloop
 import tornado.web
 import tornado.gen as gen
 import tornado_mysql
-import json 
 
 class GamesHandler(tornado.web.RequestHandler):
 	@gen.coroutine
@@ -39,7 +38,7 @@ class PlayersHandler(tornado.web.RequestHandler):
 		yield cur.execute("SELECT * FROM players")
 		result = []
 		for row in cur:
-			result.append({'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])})
+			result.append({'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3]), 'login': str(row[4])})
 		self.write({"players":result})
 		cur.close()
 		conn.close()
@@ -49,6 +48,8 @@ class PlayerInsertHandler(tornado.web.RequestHandler):
 	def post(self):
 		name = self.get_argument('name', '')
 		num_group = self.get_argument('num_group', '')
+		login = self.get_argument('login', '')
+		password = self.get_argument('password', '')
 
 		if not name:
 			response = {
@@ -60,12 +61,22 @@ class PlayerInsertHandler(tornado.web.RequestHandler):
 				'error': True, 
 				'msg': 'Пожалуйста, введите номер группы.'
 			}
+		elif not login:
+			response = {
+				'error': True,
+				'msg': 'Пожалуйста, введите логин.'
+			}
+		elif not password:
+			response = {
+				'error': True,
+				'msg': 'Пожалуйста, введите пароль.'
+			}
 		else:
 			try:
 				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 				cur = conn.cursor()
-				yield cur.execute("INSERT INTO players (name, num_group) VALUES (%s, %s)", (name, num_group, ))
-				yield cur.execute("SELECT id FROM players WHERE name = %s AND num_group = %s", (name, num_group[: 6], ))
+				yield cur.execute("INSERT INTO players (name, num_group, login, password) VALUES (%s, %s, %s, %s)", (name, num_group, login, password, ))
+				yield cur.execute("SELECT id FROM players WHERE name = %s AND num_group = %s AND login = %s", (name, num_group[: 6], login))
 				conn.commit()
 				id_ = str(cur.fetchone()[0])
 				cur.close()
@@ -186,7 +197,7 @@ class ParticipantInsertHandler(tornado.web.RequestHandler):
 		if not player:
 			response = {
 				'error': True, 
-				'msg': 'Пожалуйста, введите id игрока.'
+				'msg': 'Пожалуйста, введите login игрока.'
 			}
 		elif not event:
 			response = {
@@ -220,13 +231,13 @@ class PlayersFromParticipantsHandler(tornado.web.RequestHandler):
 		if not player:
 			response = {
 				'error': True, 
-				'msg': 'Пожалуйста, введите id игрока.'
+				'msg': 'Пожалуйста, введите login игрока.'
 			}
 		else:
 			try:
 				conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 				cur = conn.cursor()
-				yield cur.execute("SELECT e.id, g.name, e.time, e.place FROM players p, participants pa, events e, games g WHERE pa.player = p.id AND g.id = e.game AND e.id = pa.event AND p.id = %s", 
+				yield cur.execute("SELECT e.id, g.name, e.time, e.place FROM players p, participants pa, events e, games g WHERE pa.player = p.login AND g.id = e.game AND e.id = pa.event AND p.login = %s",
 					(player))
 				response = []
 				for i, row in enumerate(cur):
@@ -259,7 +270,7 @@ class EventsFromParticipantsHandler(tornado.web.RequestHandler):
 					(event))
 				response = []
 				for i, row in enumerate(cur):
-					response.append({'id': str(row[0]), 'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3])})
+					response.append({'id': str(row[0]), 'name': str(row[1]), 'num_group': str(row[2]), 'rating': str(row[3]), 'login': str(row[4])})
 				response = {"events": response}
 				cur.close()
 				conn.close()
@@ -360,5 +371,5 @@ application = tornado.web.Application([
 
 if __name__ == "__main__":
 	http_server = tornado.httpserver.HTTPServer(application)
-	http_server.listen(255)
+	http_server.listen(80)
 	tornado.ioloop.IOLoop.instance().start()
