@@ -22,7 +22,7 @@ class EventsHandler(tornado.web.RequestHandler):
 	def get(self):
 		conn = yield tornado_mysql.connect(host='127.0.0.1', port=3306, user='ubuntu', passwd='', db='miemgames', charset='utf8')
 		cur = conn.cursor()
-		yield cur.execute("SELECT e.id, e.game, e.time, g.picture, g.id FROM events e, games g WHERE g.id = e.game")
+		yield cur.execute("SELECT e.id, g.name, e.time, g.picture, g.id FROM events e, games g WHERE g.id = e.game")
 		result = []
 		for row in cur:
 			result.append({'id': str(row[0]), 'game': str(row[1]), 'time': str(row[2]), 'picture': str(row[3])})
